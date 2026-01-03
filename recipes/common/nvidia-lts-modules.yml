@@ -1,0 +1,22 @@
+modules:
+  # Part 1: NVIDIA driver packages from akmods
+  - type: containerfile
+    snippets:
+      - COPY --from=ghcr.io/ublue-os/akmods-nvidia-lts:main-43 /rpms/ /tmp/rpms
+      - RUN find /tmp/rpms
+      - RUN dnf install -y /tmp/rpms/ublue-os/ublue-os-nvidia*.rpm
+      - RUN sed -i '0,/enabled=0/{s/enabled=0/enabled=1\npriority=90/}' /etc/yum.repos.d/negativo17-fedora-nvidia-lts.repo
+      - RUN dnf install -y /tmp/rpms/kmods/kmod-nvidia*.rpm libnvidia-fbc libva-nvidia-driver nvidia-driver nvidia-driver-cuda nvidia-modprobe nvidia-persistenced nvidia-settings
+
+  # Part 2: Kernel module blacklist (preventing nouveau from loading)
+  - type: files
+    files:
+      - source: system/usr/lib/modprobe.d
+        destination: /usr/lib/modprobe.d
+
+  # Part 3: DRM and boot configuration scripts
+  - type: script
+    scripts:
+      - removeunusedrepos.sh
+      - setearlyloading.sh
+      - setdrmvariables.sh

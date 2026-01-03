@@ -1,0 +1,11 @@
+modules:
+  - type: dnf
+    repos:
+      copr:
+        - yalter/niri
+    install:
+      install-weak-deps: false
+      packages:
+        - niri
+        - xdg-desktop-portal-gnome
+        - kitty

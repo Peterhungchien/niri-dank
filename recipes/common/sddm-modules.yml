@@ -1,0 +1,24 @@
+modules:
+  # Part 1: SDDM and theme packages
+  - type: dnf
+    install:
+      install-weak-deps: false
+      packages:
+        - sddm
+        - sddm-themes
+        - qt5-qtgraphicaleffects
+        - qt5-qtquickcontrols2
+        - qt5-qtsvg
+        - kwallet
+        - pam-kwallet
+
+  # Part 2: Apply custom theme
+  - type: script
+    scripts:
+      - setsddmtheming.sh
+
+  # Part 3: Enable SDDM service
+  - type: systemd
+    system:
+      enabled:
+        - sddm-boot.service

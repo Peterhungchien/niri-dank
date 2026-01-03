@@ -1,0 +1,25 @@
+modules:
+  # Note: base-main already includes proprietary codecs (ffmpeg, libfdk-aac, libheif, etc.)
+  # We only need to add packages that aren't already in base-main
+
+  - type: dnf
+    install:
+      install-weak-deps: false
+      packages:
+        - libopenjph  # Not in base-main
+        - rar         # Not in base-main
+        # Removed duplicates already in base-main:
+        # heif-pixbuf-loader, ffmpegthumbnailer
+
+  # Only replace packages that might still be free versions
+  # base-main already has ffmpeg and libfdk-aac proprietary versions
+  - type: dnf
+    replace:
+      - from-repo: fedora-multimedia
+        packages:
+          - old: gstreamer1-plugins-ugly-free
+            new: gstreamer1-plugins-ugly
+
+  - type: script
+    scripts:
+      - removeunusedrepos.sh

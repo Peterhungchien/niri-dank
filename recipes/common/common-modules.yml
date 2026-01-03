@@ -1,0 +1,116 @@
+modules:
+  # Part 1: UBlue akmods infrastructure
+  - type: containerfile
+    snippets:
+      - COPY --from=ghcr.io/ublue-os/akmods:main-43 /rpms /tmp/rpms
+      - COPY --from=ghcr.io/ublue-os/akmods:main-43 /kernel-rpms /tmp/rpms/kernel
+      - RUN find /tmp/rpms
+      - RUN rpm -q ublue-os-akmods-addons || dnf install -y /tmp/rpms/ublue-os/ublue-os-akmods-addons*.rpm
+
+  - type: script
+    scripts:
+      - installsignedkernel.sh
+
+  # Part 2: UBlue repository and services
+  - type: dnf
+    repos:
+      files:
+        - https://copr.fedorainfracloud.org/coprs/ublue-os/packages/repo/fedora-%OS_VERSION%/ublue-os-packages-fedora-%OS_VERSION%.repo
+    install:
+      install-weak-deps: false
+      packages:
+        - ublue-os-udev-rules
+        - ublue-os-update-services
+        - ublue-os-signing
+        - ublue-os-luks
+        - ublue-os-just
+
+  - type: script
+    scripts:
+      - installandroidudev.sh
+      - addimageinfo.sh
+
+  # Part 3: All common packages
+  - type: dnf
+    install:
+      install-weak-deps: false
+      packages:
+        # launchers
+        - rofi-wayland
+        - wofi
+        # environment
+        - tuned-ppd
+        - xorg-x11-server-Xwayland
+        - headsetcontrol
+        - mediainfo
+        - polkit
+        - xfce-polkit
+        - xdg-user-dirs
+        - dbus-tools
+        - dbus-daemon
+        - pavucontrol
+        - playerctl
+        - qt5-qtwayland
+        - qt6-qtwayland
+        - vulkan-validation-layers
+        - vulkan-tools
+        - google-noto-emoji-fonts
+        - gnome-disk-utility
+        - ddcutil
+        - p7zip
+        - steam-devices
+        # Removed duplicates already in base-main:
+        # fzf, wl-clipboard, openssl, vim, just, alsa-firmware, distrobox
+        # sound
+        - wireplumber
+        - pipewire
+        - pamixer
+        - pulseaudio-utils
+        # networking
+        - network-manager-applet
+        - NetworkManager-openvpn
+        - NetworkManager-openvpn-gnome
+        - NetworkManager-openconnect
+        - NetworkManager-openconnect-gnome
+        - bluez
+        - bluez-tools
+        - blueman
+        - firewall-config
+        # file manager
+        - thunar
+        - thunar-archive-plugin
+        - thunar-volman
+        - xarchiver
+        - imv
+        - gvfs-mtp
+        - gvfs-gphoto2
+        - gvfs-smb
+        - gvfs-nfs
+        - gvfs-fuse
+        - gvfs-archive
+        - android-tools
+        # screenshot
+        - slurp
+        - grim
+        # display
+        - wlr-randr
+        - wlsunset
+        - brightnessctl
+        - kanshi
+        # notifications
+        - dunst
+        # theme and GUI
+        - fontawesome-fonts-all
+        - gnome-themes-extra
+        - gnome-icon-theme
+        - paper-icon-theme
+        - breeze-icon-theme
+        - papirus-icon-theme
+        # waybar for status bar
+        - waybar
+
+  - type: script
+    scripts:
+      - installrpmfusion.sh
+      - removeunusedrepos.sh
+      - addbrewjustimport.sh
