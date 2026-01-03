@@ -45,6 +45,8 @@ modules:
         - mediainfo
         - polkit
         - xfce-polkit
+        - gnome-keyring
+        - libsecret
         - xdg-user-dirs
         - dbus-tools
         - dbus-daemon
@@ -52,6 +54,9 @@ modules:
         - playerctl
         - qt5-qtwayland
         - qt6-qtwayland
+        - qt5ct
+        - qt6ct
+        - kvantum
         - vulkan-validation-layers
         - vulkan-tools
         - google-noto-emoji-fonts
@@ -106,8 +111,21 @@ modules:
         - paper-icon-theme
         - breeze-icon-theme
         - papirus-icon-theme
+        - lxappearance
         # waybar for status bar
         - waybar
+
+  # Part 4: COPR packages for additional Wayland utilities
+  - type: dnf
+    repos:
+      files:
+        - https://copr.fedorainfracloud.org/coprs/sdegler/hyprland/repo/fedora-%OS_VERSION%/sdegler-hyprland-fedora-%OS_VERSION%.repo
+        - https://copr.fedorainfracloud.org/coprs/tofik/nwg-shell/repo/fedora-%OS_VERSION%/tofik-nwg-shell-fedora-%OS_VERSION%.repo
+    install:
+      install-weak-deps: false
+      packages:
+        - cliphist
+        - nwg-look
 
   - type: script
     scripts:
