@@ -1,18 +1,7 @@
 modules:
-  # Note: base-main already includes proprietary codecs (ffmpeg, libfdk-aac, libheif, etc.)
-  # We only need to add packages that aren't already in base-main
+  # Note: base-main already includes proprietary codecs (ffmpeg, libfdk-aac, libheif, libopenjph, etc.)
+  # Only replace gstreamer-ugly since base-main already has all other proprietary packages
 
-  - type: dnf
-    install:
-      install-weak-deps: false
-      packages:
-        - libopenjph  # Not in base-main
-        - rar         # Not in base-main
-        # Removed duplicates already in base-main:
-        # heif-pixbuf-loader, ffmpegthumbnailer
-
-  # Only replace packages that might still be free versions
-  # base-main already has ffmpeg and libfdk-aac proprietary versions
   - type: dnf
     replace:
       - from-repo: fedora-multimedia
