@@ -1,13 +1,6 @@
 modules:
   # Note: base-main already includes proprietary codecs (ffmpeg, libfdk-aac, libheif, libopenjph, etc.)
-  # Only replace gstreamer-ugly since base-main already has all other proprietary packages
-
-  - type: dnf
-    replace:
-      - from-repo: fedora-multimedia
-        packages:
-          - old: gstreamer1-plugins-ugly-free
-            new: gstreamer1-plugins-ugly
+  # Including gstreamer1-plugins-ugly, so no replacements are needed
 
   - type: script
     scripts:
