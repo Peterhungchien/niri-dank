@@ -1,0 +1,213 @@
+// Default niri configuration for niri-dank
+// Users can override by creating ~/.config/niri/config.kdl
+
+// Inputs
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        accel-speed 0.2
+    }
+
+    mouse {
+        accel-speed 0.2
+    }
+}
+
+// Output configuration
+// Example output configuration - users should customize
+// output "eDP-1" {
+//     mode "1920x1080@60.000"
+//     scale 1.0
+// }
+
+// Layout
+layout {
+    gaps 8
+
+    center-focused-column "on-overflow"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        width 2
+        active-color "#568b22"
+        inactive-color "#505050"
+    }
+
+    border {
+        width 2
+        active-color "#568b22"
+        inactive-color "#505050"
+    }
+}
+
+// Spawn programs at startup
+spawn-at-startup "waybar"
+spawn-at-startup "dunst"
+spawn-at-startup "xfce-polkit"
+spawn-at-startup "nm-applet" "--indicator"
+spawn-at-startup "blueman-applet"
+
+// Auto screen lock after 5 minutes of inactivity
+spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock" "-f" "timeout" "600" "niri" "msg" "action" "power-off-monitors"
+
+// Prefer dark theme
+prefer-no-csd
+
+environment {
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    XCURSOR_THEME "Adwaita"
+    XCURSOR_SIZE "24"
+}
+
+// Window rules
+window-rule {
+    // Float specific windows
+    match app-id="^org\\.gnome\\.Calculator$"
+    match app-id="^pavucontrol$"
+    match app-id="^nm-connection-editor$"
+
+    default-column-width { fixed 800; }
+}
+
+window-rule {
+    match app-id="^imv$"
+    default-column-width { fixed 1200; }
+}
+
+// Keybindings
+binds {
+    // System
+    Mod+Shift+E { quit; }
+    Mod+Shift+R { spawn "niri" "msg" "action" "reload-config"; }
+
+    // Applications
+    Mod+Return { spawn "kitty"; }
+    Mod+Shift+Return { spawn "footclient"; }  // Fast terminal via foot-server
+    Mod+D { spawn "rofi" "-show" "drun" "-show-icons"; }
+    Mod+Shift+D { spawn "wofi" "--show" "drun"; }
+    Mod+E { spawn "thunar"; }
+
+    // Screen lock
+    Mod+Ctrl+L { spawn "swaylock" "-f"; }
+
+    // Screenshot
+    Print { spawn "sh" "-c" "grim - | swappy -f -"; }
+    Mod+Print { spawn "sh" "-c" "slurp | grim -g - - | swappy -f -"; }
+
+    // Window management
+    Mod+Q { close-window; }
+    Mod+F { fullscreen-window; }
+    Mod+M { maximize-column; }
+
+    // Focus
+    Mod+H { focus-column-left; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+    Mod+L { focus-column-right; }
+    Mod+Left { focus-column-left; }
+    Mod+Down { focus-window-down; }
+    Mod+Up { focus-window-up; }
+    Mod+Right { focus-column-right; }
+
+    // Move windows
+    Mod+Shift+H { move-column-left; }
+    Mod+Shift+J { move-window-down; }
+    Mod+Shift+K { move-window-up; }
+    Mod+Shift+L { move-column-right; }
+    Mod+Shift+Left { move-column-left; }
+    Mod+Shift+Down { move-window-down; }
+    Mod+Shift+Up { move-window-up; }
+    Mod+Shift+Right { move-column-right; }
+
+    // Workspaces
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+
+    // Move windows to workspaces
+    Mod+Shift+1 { move-window-to-workspace 1; }
+    Mod+Shift+2 { move-window-to-workspace 2; }
+    Mod+Shift+3 { move-window-to-workspace 3; }
+    Mod+Shift+4 { move-window-to-workspace 4; }
+    Mod+Shift+5 { move-window-to-workspace 5; }
+    Mod+Shift+6 { move-window-to-workspace 6; }
+    Mod+Shift+7 { move-window-to-workspace 7; }
+    Mod+Shift+8 { move-window-to-workspace 8; }
+    Mod+Shift+9 { move-window-to-workspace 9; }
+
+    // Scroll through workspaces
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+Page_Up { focus-workspace-up; }
+    Mod+Ctrl+Down { focus-workspace-down; }
+    Mod+Ctrl+Up { focus-workspace-up; }
+
+    // Move to monitor
+    Mod+Shift+Page_Down { move-window-to-workspace-down; }
+    Mod+Shift+Page_Up { move-window-to-workspace-up; }
+
+    // Column management
+    Mod+Comma { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+
+    // Column width
+    Mod+R { switch-preset-column-width; }
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    // Window height
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
+
+    // Audio controls (requires playerctl and pamixer)
+    XF86AudioRaiseVolume { spawn "pamixer" "-i" "5"; }
+    XF86AudioLowerVolume { spawn "pamixer" "-d" "5"; }
+    XF86AudioMute { spawn "pamixer" "-t"; }
+    XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    XF86AudioNext { spawn "playerctl" "next"; }
+    XF86AudioPrev { spawn "playerctl" "previous"; }
+
+    // Brightness controls
+    XF86MonBrightnessUp { spawn "brightnessctl" "s" "+5%"; }
+    XF86MonBrightnessDown { spawn "brightnessctl" "s" "5%-"; }
+
+    // Switch between windows
+    Mod+Tab { focus-window-down-or-right; }
+    Mod+Shift+Tab { focus-window-up-or-left; }
+}
+
+// Mouse bindings
+binds {
+    Mod+WheelScrollDown { focus-workspace-down; }
+    Mod+WheelScrollUp { focus-workspace-up; }
+    Mod+WheelScrollRight { focus-column-right; }
+    Mod+WheelScrollLeft { focus-column-left; }
+}
+
+// Debugging (disable in production)
+debug {
+    render-drm-device "/dev/dri/renderD128"
+
+    // Uncomment for debugging
+    // dbus-interfaces-in-non-session-instances
+    // wait-for-frame-completion-before-queueing
+}
