@@ -46,12 +46,14 @@ modules:
         - polkit
         - xfce-polkit
         - gnome-keyring
+        - gnome-keyring-pam
         - libsecret
         - xdg-user-dirs
         - dbus-tools
         - dbus-daemon
         - pavucontrol
         - playerctl
+        - cava  # Audio visualizer
         - qt5-qtwayland
         - qt6-qtwayland
         - qt5ct
@@ -60,7 +62,9 @@ modules:
         - vulkan-validation-layers
         - vulkan-tools
         - google-noto-emoji-fonts
+        - default-fonts-core-emoji
         - gnome-disk-utility
+        - fastfetch  # Modern system info tool
         - ddcutil
         - p7zip
         - steam-devices
