@@ -55,14 +55,11 @@ layout {
 }
 
 // Spawn programs at startup
-spawn-at-startup "waybar"
-spawn-at-startup "dunst"
-spawn-at-startup "xfce-polkit"
-spawn-at-startup "nm-applet" "--indicator"
-spawn-at-startup "blueman-applet"
+// DMS panel starts via systemd service (dms.service), not spawn-at-startup
+spawn-at-startup "dunst"  // Fallback notifications (DMS may handle internally)
 
-// Auto screen lock after 5 minutes of inactivity
-spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock" "-f" "timeout" "600" "niri" "msg" "action" "power-off-monitors"
+// DMS provides lock screen & idle management via systemd
+// nm-applet and blueman-applet: DMS control center handles these
 
 // Prefer dark theme
 prefer-no-csd
@@ -97,12 +94,11 @@ binds {
     // Applications
     Mod+Return { spawn "kitty"; }
     Mod+Shift+Return { spawn "footclient"; }  // Fast terminal via foot-server
+    // DMS has built-in UI launcher; rofi kept as CLI fallback
     Mod+D { spawn "rofi" "-show" "drun" "-show-icons"; }
-    Mod+Shift+D { spawn "wofi" "--show" "drun"; }
     Mod+E { spawn "thunar"; }
 
-    // Screen lock
-    Mod+Ctrl+L { spawn "swaylock" "-f"; }
+    // Lock screen: DMS handles via its own keybindings
 
     // Screenshot
     Print { spawn "sh" "-c" "grim - | swappy -f -"; }

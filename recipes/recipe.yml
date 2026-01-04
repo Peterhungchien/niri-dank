@@ -46,6 +46,7 @@ modules:
   - from-file: common/nvidia-lts-modules.yml
   - from-file: common/sddm-modules.yml
   - from-file: common/niri-modules.yml
+  - from-file: common/dms-modules.yml
   - from-file: common/proprietary-media-modules.yml
   - from-file: common/final-modules.yml
 

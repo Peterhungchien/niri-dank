@@ -36,15 +36,13 @@ modules:
       install-weak-deps: false
       packages:
         # launchers
-        - rofi-wayland
-        - wofi
+        - rofi-wayland  # CLI launcher fallback (DMS has UI-based launcher)
         # environment
         - tuned-ppd
         - xorg-x11-server-Xwayland
         - headsetcontrol
         - mediainfo
-        - polkit
-        - xfce-polkit
+        - polkit  # DMS provides polkit agent (xfce-polkit removed)
         - gnome-keyring
         - gnome-keyring-pam
         - libsecret
@@ -116,8 +114,7 @@ modules:
         - breeze-icon-theme
         - papirus-icon-theme
         - lxappearance
-        # waybar for status bar
-        - waybar
+        # DMS provides status bar/panel (waybar removed)
 
   # Part 4: COPR packages for additional Wayland utilities
   - type: dnf

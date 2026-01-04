@@ -1,0 +1,31 @@
+modules:
+  # DankMaterialShell (DMS) - Complete desktop shell for niri
+  # DMS provides: status bar, notifications, app launcher, lock screen, polkit agent, control center
+
+  # Part 1: Add DMS COPR repositories and install packages
+  - type: dnf
+    repos:
+      files:
+        - https://copr.fedorainfracloud.org/coprs/avengemedia/dms-git/repo/fedora-%OS_VERSION%/avengemedia-dms-git-fedora-%OS_VERSION%.repo
+        - https://copr.fedorainfracloud.org/coprs/avengemedia/danklinux/repo/fedora-%OS_VERSION%/avengemedia-danklinux-fedora-%OS_VERSION%.repo
+    install:
+      install-weak-deps: false
+      packages:
+        # Core DMS packages
+        - dms          # Main desktop shell (QuickShell-based)
+        - dms-cli      # Command-line interface for DMS
+        - dms-greeter  # Greeter for greetd (installed but not used - SDDM kept as display manager)
+        - dgop         # System and process monitoring utility
+        - dsearch      # Filesystem search utility (NOT the app launcher)
+        # DMS dependencies and enhancements
+        - quickshell-git  # Qt/QML framework required by DMS
+        - matugen         # Automatic theme generation from wallpapers
+        - valent-git      # KDE Connect alternative for device integration
+
+  # Part 2: Enable DMS systemd service globally
+  # DMS runs as independent systemd service (not as niri dependency)
+  # Both DMS and niri start as part of graphical-session.target
+  - type: systemd
+    user:
+      enabled:
+        - dms.service
