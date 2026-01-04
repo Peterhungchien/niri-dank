@@ -9,3 +9,14 @@ modules:
         - niri
         - xdg-desktop-portal-gnome
         - kitty
+        - foot  # Foot terminal with server mode for faster spawning
+        - swaylock-effects  # Screen locker with effects support
+        - swayidle  # Idle management daemon
+        - udiskie  # Automount removable media
+
+  # Enable user services for Wayland session
+  - type: systemd
+    user:
+      enabled:
+        - udiskie.service
+        - foot-server.service
