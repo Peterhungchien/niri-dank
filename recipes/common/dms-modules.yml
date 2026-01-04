@@ -20,7 +20,6 @@ modules:
         # DMS dependencies and enhancements
         - quickshell-git  # Qt/QML framework required by DMS
         - matugen         # Automatic theme generation from wallpapers
-        - valent-git      # KDE Connect alternative for device integration
 
   # Part 2: Enable DMS systemd service globally
   # DMS runs as independent systemd service (not as niri dependency)
